@@ -1,0 +1,5 @@
+{
+  "name": "Silicon Defender: Atomic Scale",
+  "description": "A 3D educational shooter where you shrink down to the atomic level to fix defects in a silicon semiconductor lattice. Powered by Gemini API for real-time scientific data.",
+  "requestFramePermissions": []
+}
