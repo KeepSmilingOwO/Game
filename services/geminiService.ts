@@ -30,15 +30,18 @@ const FALLBACK_DEFECTS: DefectType[] = [
 ];
 
 export const fetchDefectData = async (): Promise<DefectType[]> => {
-  if (!process.env.API_KEY) {
-    console.warn("No API_KEY found. Using fallback data.");
+  // 1. Check if the key exists and is not an empty string
+  const apiKey = process.env.API_KEY;
+  
+  if (!apiKey || apiKey.length === 0 || apiKey === 'undefined') {
+    console.warn("Gemini Service: API_KEY is missing or empty. Using fallback data. Check Netlify Environment Variables.");
     return FALLBACK_DEFECTS;
   }
 
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    // 2. Only initialize if we have a valid key
+    const ai = new GoogleGenAI({ apiKey: apiKey });
     
-    // We ask Gemini to generate 3 interesting defects found in semiconductor crystals
     const model = "gemini-2.5-flash";
     const prompt = `
       Generate a JSON list of 3 distinct types of crystal defects found in Silicon semiconductor materials. 
@@ -82,6 +85,7 @@ export const fetchDefectData = async (): Promise<DefectType[]> => {
 
   } catch (error) {
     console.error("Gemini API Error:", error);
+    // If quota exceeded or other API error, fallback gracefully
     return FALLBACK_DEFECTS;
   }
 };
