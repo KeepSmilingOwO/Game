@@ -4,6 +4,25 @@ import { Stars, PointerLockControls, Float } from '@react-three/drei';
 import * as THREE from 'three';
 import { GameEntity, DefectType, GameStatus } from '../types';
 
+// Fix for TypeScript errors regarding JSX Intrinsic Elements
+// This augments the global JSX namespace to include Three.js elements used by @react-three/fiber
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      instancedMesh: any;
+      group: any;
+      mesh: any;
+      meshStandardMaterial: any;
+      icosahedronGeometry: any;
+      meshBasicMaterial: any;
+      boxGeometry: any;
+      ambientLight: any;
+      pointLight: any;
+      fog: any;
+    }
+  }
+}
+
 interface GameSceneProps {
   status: GameStatus;
   currentScore: number;
